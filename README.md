@@ -7,3 +7,6 @@
 
 ###Access it
 `http://localhost:8080/wp-json/wp/v2`
+
+###Admin
+`http://localhost:8080/wp-login.php` root root
