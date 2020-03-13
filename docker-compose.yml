@@ -31,6 +31,8 @@ services:
     restart: always
     ports:
       - 49160:8080
+    volumes:
+      - ./appjs:/usr/src/app/appjs
 
 volumes:
   wordpress:
