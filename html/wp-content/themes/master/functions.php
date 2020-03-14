@@ -158,3 +158,11 @@ require get_template_directory() . '/inc/customizer.php';
 if ( defined( 'JETPACK__VERSION' ) ) {
 	require get_template_directory() . '/inc/jetpack.php';
 }
+
+/**
+ * Hide the Default posts editor on Back office.
+ */
+function hide_edit_post_visual_editor() {
+    echo '<style>.edit-post-visual-editor{display: none;}</style>';
+}
+add_action('admin_head', 'hide_edit_post_visual_editor');

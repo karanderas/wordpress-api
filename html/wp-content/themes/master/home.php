@@ -2,30 +2,12 @@
 /**
  * Template Name: Home
  *
- * It's the route file of the client solutions.
+ * It's the home page of the application.
+ * Please note that this is the WordPress construct of pages
+ * and that other 'pages' on your WordPress site may use a
+ * different template.
  *
- * @package underscore
+ * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
+ *
+ * @package master
  */
-get_header();
-
-$post_id             = get_the_ID();
-$context['title']    = get_field( 'title', $post_id );
-$context['subtitle'] = get_field( 'subtitle', $post_id );
-$context['image']    = get_field( 'image', $post_id );
-?>
-<img src="https://a.slack-edge.com/80588/img/services/jenkins-ci_512.png" style="width: 100px; height: 100px;"alt="">
-
-<script>
-var fetchModule = (function() {
-    let img = document.getElementsByTagName('img')[0];
-    let url = 'http://localhost:8080/wp-json/acf/v3/pages/19/';
-    async function fetchUrl() {
-        const resp = await fetch(url);
-        const data = await resp.json();
-        img.src = data['acf']['image']['url'];
-    }
-    fetchUrl();
-})()
-</script>
-<?php
-get_footer();
