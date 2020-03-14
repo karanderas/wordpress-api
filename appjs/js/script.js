@@ -12,7 +12,6 @@ var fetchPostModule = (() => {
         return post;
     })()
     .then(post => {
-        console.log(post);
         Object.keys(dom).forEach(item => {
             if (item === 'image') {
                 let image_url = post['acf'][`home_${item}`]['sizes']['medium'];
@@ -21,8 +20,7 @@ var fetchPostModule = (() => {
             dom[item].innerHTML = post['acf'][`home_${item}`];
         });
     })
-    .catch(e => {
-        console.log(e);
+    .catch(() => {
         return dom.image.src = 'http://localhost:8080/wp-content/uploads/2019/11/fire-257x300.png';
     })
 })
