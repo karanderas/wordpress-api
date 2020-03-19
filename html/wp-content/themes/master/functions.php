@@ -163,6 +163,66 @@ if ( defined( 'JETPACK__VERSION' ) ) {
  * Hide the Default posts editor on Back office.
  */
 function hide_edit_post_visual_editor() {
-    echo '<style>.edit-post-visual-editor{display: none;}</style>';
+    echo '<style>div.editor-block-list__layout.block-editor-block-list__layout{display: none;}</style>';
 }
 add_action('admin_head', 'hide_edit_post_visual_editor');
+
+function delete_unmatched_files($arrPages, $files, $dir) {
+    if ( count( $files ) !== count( $arrPages ) ) {
+        for ( $i = 0; $i < count( $files ) -2; $i++) {
+            if ( ! in_array( $files[$i], $arrPages ) ) {
+                unlink( $dir . $files[$i] );
+            }
+        }
+    }
+}
+
+function require_custom_pages( $pages, $dir ) {
+    foreach( $pages as $page ) {
+        if ( file_exists( $dir . strtolower($page->post_title) . '.php' ) ) {
+            require_once $dir . strtolower($page->post_title) . '.php';
+        }
+    }
+}
+
+function set_wp_custom_pages( $pages, $dir ) {
+    $files = scandir( $dir, 1 );
+    $arrPages = array();
+
+    foreach ($pages as $page) {
+        array_push( $arrPages, strtolower( $page->post_title ) . '.php' );
+    }
+
+    delete_unmatched_files( $arrPages, $files, $dir );
+    require_custom_pages( $arrPages, $dir );
+}
+
+function sort_pages_by_id($a, $b) {
+    return strcmp($a->ID, $b->ID);
+}
+
+function update_custom_page() {
+    $pages = get_pages();
+    usort($pages, "sort_pages_by_id");
+    $page = strtolower( end( $pages )->post_title );
+    $dir = get_stylesheet_directory() . '/pages/';
+    $file = fopen( $dir . $page . '.php', 'w' );
+    fwrite(
+    $file,
+    "<?php
+    /**
+    * Template Name: {$page}
+    *
+    * It's the {$page} page of the application.
+    * Please note that this is the WordPress construct of pages
+    * and that other 'pages' on your WordPress site may use a
+    * different template.
+    *
+    * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
+    *
+    * @package master
+    */");
+    fclose( $file );
+    set_wp_custom_pages( $pages, $dir );
+}
+add_action('save_post_page', 'update_custom_page');
