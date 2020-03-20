@@ -1,17 +1,24 @@
 'use strict';
 
-const express = require('express');
+// Variables
+var express = require('express');
+var app = express();
+var workdir = '/usr/src/app/appjs/';
 
 // Constants
 const PORT = 8080;
 const HOST = '0.0.0.0';
 
-// App
-const app = express();
-const workdir = '/usr/src/app/appjs/';
-
 app.get('/', (req, res) => {
-    res.sendFile(workdir + 'index.html');
+    res.sendFile(workdir + 'home.html');
+});
+
+app.get('/products', (req, res) => {
+    res.sendFile(workdir + 'products.html');
+});
+
+app.get('/product/:id', (req, res) => {
+    res.sendFile(workdir + 'product.html');
 });
 
 app.get('/js/script.js', (req, res) => {

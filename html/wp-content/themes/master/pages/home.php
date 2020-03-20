@@ -1,6 +1,6 @@
 <?php
     /**
-    * Template Name: home
+    * Template Name: Home
     *
     * It's the home page of the application.
     * Please note that this is the WordPress construct of pages

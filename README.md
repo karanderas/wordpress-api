@@ -14,3 +14,6 @@
 
 ####Create new Docker Image
 `docker build -t jcastelain/node-web-app .`
+
+####Debug Nodejs
+`node --inspect server.js`
