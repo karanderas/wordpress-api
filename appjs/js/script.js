@@ -11,31 +11,31 @@ var fetchHomeModule = (() => {
             image: document.getElementsByTagName('img')[0]
         }
     ];
+    for (let i=0; i<urls.length;i++) {
+        fetch(urls[i])
+        .then(post => post.json())
+        .then(post => {
+            if (i===0) {
+                post.forEach(item => {
+                    if (item.slug === 'home') {
+                        return dom[i].title.innerHTML = item.title.rendered;
+                    }
+                })
 
-    fetch(urls[0])
-    .then(pages => pages.json())
-    .then(pages => {
-        pages.forEach(item => {
-            if (item.slug === 'home') {
-                return dom[0].title.innerHTML = item.title.rendered;
+            }else{
+                Object.keys(dom[i]).forEach(item => {
+                    if (item === 'image') {
+                        let image_url = post['acf'][`home_${item}`]['sizes']['medium'];
+                        return dom[i][item].src = image_url;
+                    }
+                    dom[i][item].innerHTML = post['acf'][`home_${item}`];
+                });
             }
         })
-    })
-    .catch((e) => console.log(e))
-
-    fetch(urls[1])
-    .then(post => post.json())
-    .then(post => {
-        Object.keys(dom[1]).forEach(item => {
-            console.log()
-            if (item === 'image') {
-                let image_url = post['acf'][`home_${item}`]['sizes']['medium'];
-                return dom[1][item].src = image_url;
-            }
-            dom[1][item].innerHTML = post['acf'][`home_${item}`];
+        .catch((error) => {
+            console.log(error);
+            return dom[i].image.src = 'http://localhost:8080/wp-content/uploads/2019/11/fire-257x300.png';
         });
-    })
-    .catch(() => {
-        return dom[1].image.src = 'http://localhost:8080/wp-content/uploads/2019/11/fire-257x300.png';
-    })
+    }
 })
+export {fetchHomeModule};
